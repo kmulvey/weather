@@ -14,8 +14,8 @@
 	</head>
 	<body>
 		<template is="dom-bind" id="app">
-			<!--<google-map latitude="40.8612446872" longitude="-72.8592419711" zoom="8" kml="upton.kml"></google-map> -->
-			<google-map id="radar-map" kml="https://kmulvey.github.io/weather/upton.kml"></google-map>
+			<!-- kml files come from here http://radar.weather.gov/GIS.html -->
+			<google-map id="radar-map" kml="https://kmulvey.github.io/weather/upton.kml" zoom="8"></google-map>
 			<iron-image src="http://radar.weather.gov/ridge/RadarImg/NCR/OKX_NCR_0.gif"></iron-image>
 			<highcharts-chart id="temp" type="spline" title="Temperature" x-label="Time" y-label="Temp" xAxis="{type: 'logarithmic'}" vs-time></highcharts-chart>
 		<highcharts-chart id="percip" type="spline" title="Precipitation" x-label="Time" y-label="Prob" vs-time></highcharts-chart>
@@ -30,6 +30,7 @@
 				function compareTimes(a, b) {
 	  			return a[0] - b[0];
 				}
+
 				app = document.getElementById("app")
 				app._populateRandomDataToSpline = ()=>{
 					// Temp
