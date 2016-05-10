@@ -2,14 +2,21 @@
 	<head>
 		<script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 		<link rel="import" href="bower_components/highcharts-chart/highcharts-chart.html">
+		<link rel="import" href="bower_components/google-map/google-map.html">
 		<style>
 			.highcharts-title{
 				display:none;
 			}
+			  google-map {
+					    height: 600px;
+								  }
 		</style>
 	</head>
 	<body>
 		<template is="dom-bind" id="app">
+			<!--<google-map latitude="40.8612446872" longitude="-72.8592419711" zoom="8" kml="upton.kml"></google-map> -->
+			<google-map id="radar-map" kml="/upton.kml"></google-map>
+			<iron-image src="http://radar.weather.gov/ridge/RadarImg/NCR/OKX_NCR_0.gif"></iron-image>
 			<highcharts-chart id="temp" type="spline" title="Temperature" x-label="Time" y-label="Temp" xAxis="{type: 'logarithmic'}" vs-time></highcharts-chart>
 		<highcharts-chart id="percip" type="spline" title="Precipitation" x-label="Time" y-label="Prob" vs-time></highcharts-chart>
 		<highcharts-chart id="pressure" type="spline" title="Pressure" x-label="Time" y-label="Pressure (mbar)" vs-time></highcharts-chart>
