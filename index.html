@@ -2,11 +2,18 @@
 	<head>
 		<script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 		<link rel="import" href="bower_components/highcharts-chart/highcharts-chart.html">
+		<style>
+			.highcharts-title{
+				display:none;
+			}
+		</style>
 	</head>
 	<body>
 		<template is="dom-bind" id="app">
 		<highcharts-chart id="temp" type="spline" title="Temperature" x-label="Time" y-label="Temp" vs-time></highcharts-chart>
 		<highcharts-chart id="percip" type="spline" title="Precipitation" x-label="Time" y-label="Prob" vs-time></highcharts-chart>
+		<highcharts-chart id="pressure" type="spline" title="Pressure" x-label="Time" y-label="Pressure (mbar)" vs-time></highcharts-chart>
+		<highcharts-chart id="humidity" type="spline" title="Humidity" x-label="Time" y-label="Humidity %" vs-time></highcharts-chart>
 			</template>
 			<script src="data.js"></script>
 			<script>
@@ -34,6 +41,22 @@
 					});
 					
 					app.$.percip.addSeries("Percip Prob", percip);
+					
+					// Pressure
+					var pressure=[];
+					data.daily.data.forEach(function(day){
+						pressure.push([day.time*1000,day.pressure]);
+					});
+					
+					app.$.pressure.addSeries("pressure", pressure);
+				
+          // Humidity
+          var humidity=[];
+          data.daily.data.forEach(function(day){
+            humidity.push([day.time*1000,day.humidity*100]);
+          });
+          
+          app.$.humidity.addSeries("humidity", humidity);
 				}
 				window.addEventListener('WebComponentsReady', function(e) {
 					app._populateRandomDataToSpline();
