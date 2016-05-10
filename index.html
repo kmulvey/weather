@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<template is="dom-bind" id="app">
-		<highcharts-chart id="temp" type="spline" title="Temperature" x-label="Time" y-label="Temp" vs-time></highcharts-chart>
+			<highcharts-chart id="temp" type="spline" title="Temperature" x-label="Time" y-label="Temp" xAxis="{type: 'logarithmic'}" vs-time></highcharts-chart>
 		<highcharts-chart id="percip" type="spline" title="Precipitation" x-label="Time" y-label="Prob" vs-time></highcharts-chart>
 		<highcharts-chart id="pressure" type="spline" title="Pressure" x-label="Time" y-label="Pressure (mbar)" vs-time></highcharts-chart>
 		<highcharts-chart id="humidity" type="spline" title="Humidity" x-label="Time" y-label="Humidity %" vs-time></highcharts-chart>
@@ -19,6 +19,9 @@
 			<script>
 				function fToC(temp){
 					return (temp - 32)*(5/9);
+				}
+				function compareTimes(a, b) {
+	  			return a[0] - b[0];
 				}
 				app = document.getElementById("app")
 				app._populateRandomDataToSpline = ()=>{
@@ -39,7 +42,15 @@
 					data.daily.data.forEach(function(day){
 						percip.push([day.time*1000,day.precipProbability]);
 					});
-					
+          /*
+					data.hourly.data.forEach(function(hour){
+            percip.push([hour.time*1000,hour.precipProbability]);
+          });
+          data.minutely.data.forEach(function(minute){
+            percip.push([minute.time*1000,minute.precipProbability]);
+          });
+         	percip.sort(compareTimes); 
+					*/
 					app.$.percip.addSeries("Percip Prob", percip);
 					
 					// Pressure
@@ -47,16 +58,26 @@
 					data.daily.data.forEach(function(day){
 						pressure.push([day.time*1000,day.pressure]);
 					});
-					
+					/*
+          data.hourly.data.forEach(function(hour){
+            pressure.push([hour.time*1000,hour.pressure]);
+          });
+         	pressure.sort(compareTimes); 
+					*/
 					app.$.pressure.addSeries("pressure", pressure);
 				
           // Humidity
           var humidity=[];
           data.daily.data.forEach(function(day){
-            humidity.push([day.time*1000,day.humidity*100]);
+						humidity.push([day.time*1000,day.humidity*100]);
           });
-          
-          app.$.humidity.addSeries("humidity", humidity);
+					/*
+          data.hourly.data.forEach(function(hour){
+            humidity.push([hour.time*1000,hour.humidity*100]);
+          });
+         	humidity.sort(compareTimes); 
+          */
+					app.$.humidity.addSeries("humidity", humidity);
 				}
 				window.addEventListener('WebComponentsReady', function(e) {
 					app._populateRandomDataToSpline();
