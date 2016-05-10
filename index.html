@@ -1,0 +1,43 @@
+<html>
+	<head>
+		<script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+		<link rel="import" href="bower_components/highcharts-chart/highcharts-chart.html">
+	</head>
+	<body>
+		<template is="dom-bind" id="app">
+		<highcharts-chart id="temp" type="spline" title="Temperature" x-label="Time" y-label="Temp" vs-time></highcharts-chart>
+		<highcharts-chart id="percip" type="spline" title="Precipitation" x-label="Time" y-label="Prob" vs-time></highcharts-chart>
+			</template>
+			<script src="data.js"></script>
+			<script>
+				function fToC(temp){
+					return (temp - 32)*(5/9);
+				}
+				app = document.getElementById("app")
+				app._populateRandomDataToSpline = ()=>{
+					// Temp
+					var max=[],min=[];
+					data.daily.data.forEach(function(day){
+						max.push([day.time*1000,fToC(day.temperatureMax)]);
+					});
+					data.daily.data.forEach(function(day){
+						min.push([day.time*1000,fToC(day.temperatureMin)]);
+					});
+					
+					app.$.temp.addSeries("Max Temp", max);
+					app.$.temp.addSeries("Min Temp", min);
+					
+					// Precipitation
+					var percip=[];
+					data.daily.data.forEach(function(day){
+						percip.push([day.time*1000,day.precipProbability]);
+					});
+					
+					app.$.percip.addSeries("Percip Prob", percip);
+				}
+				window.addEventListener('WebComponentsReady', function(e) {
+					app._populateRandomDataToSpline();
+				});
+		</script>
+	</body>
+</html>
