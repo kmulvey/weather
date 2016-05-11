@@ -3,24 +3,41 @@
 		<script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 		<link rel="import" href="bower_components/highcharts-chart/highcharts-chart.html">
 		<link rel="import" href="bower_components/google-map/google-map.html">
+		<link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+		  <style is="custom-style" include="iron-flex"></style>
+
 		<style>
 			.highcharts-title{
 				display:none;
 			}
-			  google-map {
-					    height: 600px;
-								  }
+			highcharts-chart {
+				--highcharts-min-height: initial
+			  height: 100%
+			}
 		</style>
 	</head>
 	<body>
 		<template is="dom-bind" id="app">
-			<!-- kml files come from here http://radar.weather.gov/GIS.html -->
-			<google-map id="radar-map" kml="https://kmulvey.github.io/weather/upton.kml" zoom="8"></google-map>
-			<iron-image src="http://radar.weather.gov/ridge/RadarImg/NCR/OKX_NCR_0.gif"></iron-image>
-			<highcharts-chart id="temp" type="spline" title="Temperature" x-label="Time" y-label="Temp" xAxis="{type: 'logarithmic'}" vs-time></highcharts-chart>
-		<highcharts-chart id="percip" type="spline" title="Precipitation" x-label="Time" y-label="Prob" vs-time></highcharts-chart>
-		<highcharts-chart id="pressure" type="spline" title="Pressure" x-label="Time" y-label="Pressure (mbar)" vs-time></highcharts-chart>
-		<highcharts-chart id="humidity" type="spline" title="Humidity" x-label="Time" y-label="Humidity %" vs-time></highcharts-chart>
+			<div class="horizontal layout">
+				<div style="width:30%;height:100%">
+					<!-- kml files come from here http://radar.weather.gov/GIS.html -->
+					<google-map id="radar-map" kml="https://kmulvey.github.io/weather/upton.kml" zoom="8" style="height:100%"></google-map>
+				</div>
+				<div class="flex layout verticle">
+					<div style="height:25%">
+						<highcharts-chart id="temp" type="spline" title="Temperature" x-label="Time" y-label="Temp" xAxis="{type: 'logarithmic'}" vs-time></highcharts-chart>
+					</div>
+					<div style="height:25%">
+						<highcharts-chart id="percip" type="spline" title="Precipitation" x-label="Time" y-label="Prob" vs-time></highcharts-chart>
+					</div>
+					<div style="height:25%">
+						<highcharts-chart id="pressure" type="spline" title="Pressure" x-label="Time" y-label="Pressure (mbar)" vs-time></highcharts-chart>
+					</div>
+					<div style="height:25%">
+						<highcharts-chart id="humidity" type="spline" title="Humidity" x-label="Time" y-label="Humidity %" vs-time></highcharts-chart>
+					</div>
+				</div>
+			</div>
 			</template>
 			<script src="data.js"></script>
 			<script>
