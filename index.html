@@ -25,16 +25,16 @@
 				</div>
 				<div class="flex layout verticle">
 					<div style="height:25%">
-						<highcharts-chart id="temp" type="spline" title="Temperature" x-label="Time" y-label="Temp" xAxis="{type: 'logarithmic'}" vs-time></highcharts-chart>
+						<highcharts-chart id="temp" type="spline" title="Temperature" x-label="Time" y-label="Temp" xAxis="{type: 'logarithmic'}" vs-time on-chart-load="adjustHeight"></highcharts-chart>
 					</div>
 					<div style="height:25%">
-						<highcharts-chart id="percip" type="spline" title="Precipitation" x-label="Time" y-label="Prob" vs-time></highcharts-chart>
+						<highcharts-chart id="percip" type="spline" title="Precipitation" x-label="Time" y-label="Prob" vs-time on-chart-load="adjustHeight"></highcharts-chart>
 					</div>
 					<div style="height:25%">
-						<highcharts-chart id="pressure" type="spline" title="Pressure" x-label="Time" y-label="Pressure (mbar)" vs-time></highcharts-chart>
+						<highcharts-chart id="pressure" type="spline" title="Pressure" x-label="Time" y-label="Pressure (mbar)" vs-time on-chart-load="adjustHeight"></highcharts-chart>
 					</div>
 					<div style="height:25%">
-						<highcharts-chart id="humidity" type="spline" title="Humidity" x-label="Time" y-label="Humidity %" vs-time></highcharts-chart>
+						<highcharts-chart id="humidity" type="spline" title="Humidity" x-label="Time" y-label="Humidity %" vs-time on-chart-load="adjustHeight"></highcharts-chart>
 					</div>
 				</div>
 			</div>
@@ -104,9 +104,18 @@
           */
 					app.$.humidity.addSeries("humidity", humidity);
 				}
+				
+    		app.adjustHeight = e => {
+    		    const chart = e.detail.component
+    		    // This does a reflow to parent (height and width) in contrast to .resizeChart() [which only does a width reflow, but ensures responsiveness on window resize]
+    		    chart.resizeChartFixed()
+    		}
 				window.addEventListener('WebComponentsReady', function(e) {
 					app._populateRandomDataToSpline();
 				});
+		    window.addEventListener('resize', function(e) {
+        $("highcharts-chart").each((_,c) => {c.resizeChartFixed()})
+    })
 		</script>
 	</body>
 </html>
